@@ -305,6 +305,8 @@ function Start-TenantSession {
         Protect-Dir $session
         $work = Join-Path $session 'gam'
         Copy-GamDir $repoDir $work
+        # gamcache isn't copied, but GAM validates its default cache_dir (<GAMCFGDIR>\gamcache) exists.
+        $null = New-Item -ItemType Directory -Force -Path (Join-Path $work 'gamcache')
         Set-GamCfgPortable $work
         Get-Manifest $work | Export-Clixml (Join-Path $session 'baseline.clixml')
 

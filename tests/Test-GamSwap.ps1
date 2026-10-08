@@ -48,8 +48,10 @@ Check 'menu lists full tenant name, not first letter' ($menuOut -match '\[1\] ac
 Check 'menu choice 1 launches the single tenant' (Test-Path "$t\menu-launch.txt")
 
 # 2 unchanged session
-$ChildCommand = "`$env:GAMCFGDIR | Set-Content '$t\gamcfgdir.txt'; (Test-Path `"`$env:GAMCFGDIR\gam.cfg`").ToString() | Add-Content '$t\gamcfgdir.txt'; (Get-ChildItem '$r' -Filter *.lock | ForEach-Object Name) | Set-Content '$t\lockname.txt'; (Test-Path `"`$env:GAMCFGDIR\*.lock`").ToString() | Set-Content '$t\lock-in-work.txt'"
+$ChildCommand = "`$env:GAMCFGDIR | Set-Content '$t\gamcfgdir.txt'; (Test-Path `"`$env:GAMCFGDIR\gam.cfg`").ToString() | Add-Content '$t\gamcfgdir.txt'; (Get-ChildItem '$r' -Filter *.lock | ForEach-Object Name) | Set-Content '$t\lockname.txt'; (Test-Path `"`$env:GAMCFGDIR\*.lock`").ToString() | Set-Content '$t\lock-in-work.txt'; (Test-Path `"`$env:GAMCFGDIR\gamcache`" -PathType Container).ToString() | Set-Content '$t\gamcache-in-work.txt'"
 Start-TenantSession 'acme'
+Check 'working copy has an (empty) gamcache dir so GAM does not warn Invalid Path' ((Get-Content "$t\gamcache-in-work.txt") -eq 'True')
+Check 'empty gamcache dir is not treated as a change / not written to repo' (-not (Test-Path "$r\gamcache"))
 Check 'lock file visible in tenant dir DURING session, named user.host.lock' ((Get-Content "$t\lockname.txt") -eq "$env:USERNAME.$env:COMPUTERNAME.lock")
 Check 'lock not copied into working copy' ((Get-Content "$t\lock-in-work.txt") -eq 'False')
 Check 'lock file DELETED after window closes' (-not (Get-ChildItem $r -Filter *.lock))
