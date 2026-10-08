@@ -4,7 +4,7 @@ Swap between per-client [GAM](https://github.com/GAM-team/GAM) (GAMADV-X / GAM7)
 
 Each client's GAM config directory (`gam.cfg`, `oauth2.txt`, `oauth2service.json`, `client_secrets.json`, …) is stored in a central repository folder. Picking a client opens a **new PowerShell window** wired to a private working copy of that client's config. When you close the window, any changes to the auth files are written back, with a backup and an audit marker.
 
-> **Status: proof of concept.** Windows only. Tested end to end against fake tenants (see [Tests](#tests)); try it on a non-critical tenant before relying on it.
+> **Status: proof of concept.** Windows only. The full lifecycle is covered by an automated test suite against fake tenants (see [Tests](#tests)), and launching a session and running `gam info domain` has been confirmed against a real Google Workspace domain. A real session that rewrites auth files (token refresh → backup and write-back) has only been exercised against fake tenants so far, so try it on a non-critical tenant before relying on it.
 
 ## Why not just copy `~\.gam` around?
 
