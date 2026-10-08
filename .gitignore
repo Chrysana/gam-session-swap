@@ -1,0 +1,13 @@
+# Tenant profiles hold live credentials - never commit them.
+repo/
+
+# Safety net in case a GAM config dir ends up anywhere in the tree.
+oauth2.txt
+oauth2.txt.*
+oauth2service.json
+oauth2service.json.*
+client_secrets.json
+gam.cfg
+gamcache/
+*.lock
+*.changed
